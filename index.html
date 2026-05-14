@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DeadTime</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="rail" aria-label="DeadTime navigation">
+        <div class="brand-mark" aria-label="DeadTime">
+          <img src="./DeadTime%20Logo.png" alt="" />
+        </div>
+        <button class="rail-button active" type="button" aria-label="Dashboard" title="Dashboard"><span aria-hidden="true">⌂</span></button>
+        <button class="rail-button" type="button" aria-label="Timers" title="Timers"><span aria-hidden="true">◷</span></button>
+        <button class="rail-button" type="button" aria-label="Tasks" title="Tasks"><span aria-hidden="true">✓</span></button>
+        <button class="rail-button" type="button" aria-label="Notes" title="Notes"><span aria-hidden="true">✎</span></button>
+        <button class="rail-button" type="button" aria-label="Toolbox" title="Toolbox"><span aria-hidden="true">⌘</span></button>
+        <button class="rail-button" id="compactToggle" type="button" aria-label="Toggle compact mode" title="Toggle compact mode"><span aria-hidden="true">▣</span></button>
+        <button class="rail-button rail-theme" id="settingsToggle" type="button" aria-label="Settings" title="Settings"><span aria-hidden="true">⚙</span></button>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <section>
+            <p class="eyebrow">quiet utility layer</p>
+            <h1>DeadTime</h1>
+          </section>
+          <div class="status-strip" aria-label="System waiting status">
+            <span class="status-dot"></span>
+            <span id="statusText">Watching for a useful gap</span>
+          </div>
+        </header>
+
+        <section class="hero-band">
+          <div class="hero-copy">
+            <p class="eyebrow">current window</p>
+            <h2 id="activeWindowTitle">Use the wait without losing the thread.</h2>
+            <p id="activeWindowCopy">Start a countdown, park a thought, or pick one small task while your main work runs in the background.</p>
+          </div>
+          <div class="focus-widget" aria-label="Focus countdown">
+            <div class="timer-ring" id="timerRing">
+              <span id="timeDisplay">05:00</span>
+            </div>
+            <div class="timer-controls">
+              <button class="icon-button" id="minusMinute" type="button" aria-label="Remove one minute" title="Remove one minute">-</button>
+              <button class="primary-button" id="startPause" type="button">Start</button>
+              <button class="icon-button" id="plusMinute" type="button" aria-label="Add one minute" title="Add one minute">+</button>
+              <button class="icon-button" id="resetTimer" type="button" aria-label="Reset timer" title="Reset timer"><span aria-hidden="true">↺</span></button>
+            </div>
+          </div>
+        </section>
+
+        <section class="dashboard-grid" aria-label="DeadTime dashboard">
+          <article class="panel resume-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">resume point</p>
+                <h3>After the wait</h3>
+              </div>
+              <button class="icon-button" id="clearResume" type="button" aria-label="Clear resume point" title="Clear resume point"><span aria-hidden="true">×</span></button>
+            </div>
+            <input id="resumeInput" type="text" maxlength="96" placeholder="When this ends, I will..." autocomplete="off" />
+            <p class="hint-text" id="resumeHint">Keep one next action visible so the wait does not steal your momentum.</p>
+          </article>
+
+          <article class="panel wait-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">while you wait</p>
+                <h3>Suggested actions</h3>
+              </div>
+              <button class="icon-button" id="shuffleSuggestion" type="button" aria-label="Refresh suggestions" title="Refresh suggestions"><span aria-hidden="true">↻</span></button>
+            </div>
+            <div class="suggestion-list" id="suggestionList"></div>
+          </article>
+
+          <article class="panel monitor-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">background watch</p>
+                <h3>Running waits</h3>
+              </div>
+              <button class="secondary-button" id="addMonitor" type="button">Add</button>
+            </div>
+            <form class="wait-form" id="waitForm">
+              <input id="waitLabel" type="text" maxlength="48" placeholder="Render, install, scan..." autocomplete="off" />
+              <input id="waitMinutes" type="number" min="1" max="180" value="10" aria-label="Wait minutes" />
+              <button class="icon-button" type="submit" aria-label="Track wait" title="Track wait">+</button>
+            </form>
+            <div class="monitor-list" id="monitorList"></div>
+          </article>
+
+          <article class="panel tasks-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">mini tasks</p>
+                <h3>Quick checklist</h3>
+              </div>
+              <span class="counter" id="taskCounter">0/0</span>
+            </div>
+            <form class="task-form" id="taskForm">
+              <input id="taskInput" type="text" maxlength="70" placeholder="Add a 2-minute task" autocomplete="off" />
+              <button class="icon-button" type="submit" aria-label="Add task" title="Add task">+</button>
+            </form>
+            <div class="task-list" id="taskList"></div>
+          </article>
+
+          <article class="panel notes-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">scratchpad</p>
+                <h3>Park a thought</h3>
+              </div>
+              <button class="icon-button" id="clearNotes" type="button" aria-label="Clear notes" title="Clear notes"><span aria-hidden="true">×</span></button>
+            </div>
+            <textarea id="notes" spellcheck="true" placeholder="Drop the thing you do not want to forget."></textarea>
+          </article>
+
+          <article class="panel toolbox-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">toolbox</p>
+                <h3>Fast launches</h3>
+              </div>
+            </div>
+            <div class="tool-grid">
+              <button type="button" data-tool="note"><span aria-hidden="true">✎</span><span>Note</span></button>
+              <button type="button" data-tool="task"><span aria-hidden="true">✓</span><span>Task</span></button>
+              <button type="button" data-tool="resume"><span aria-hidden="true">↵</span><span>Resume</span></button>
+              <button type="button" data-tool="tidy"><span aria-hidden="true">⌫</span><span>Tidy</span></button>
+            </div>
+          </article>
+
+          <article class="panel rhythm-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">rhythm</p>
+                <h3>Break signal</h3>
+              </div>
+              <label class="switch" aria-label="Break reminders">
+                <input id="breakToggle" type="checkbox" />
+                <span></span>
+              </label>
+            </div>
+            <div class="break-meter">
+              <span id="breakLabel">Reminders paused</span>
+              <div class="meter"><i id="breakMeter"></i></div>
+            </div>
+          </article>
+
+          <article class="panel settings-panel hidden" id="settingsPanel" aria-label="DeadTime settings">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">settings</p>
+                <h3>Quiet defaults</h3>
+              </div>
+            </div>
+            <div class="settings-list">
+              <label class="setting-row">
+                <span><strong>Dark theme</strong><small>Keep the utility low glare.</small></span>
+                <input id="themeToggle" type="checkbox" aria-label="Dark theme" />
+              </label>
+              <label class="setting-row">
+                <span><strong>Compact mode</strong><small>Reduce visual weight for small windows.</small></span>
+                <input id="compactSetting" type="checkbox" aria-label="Compact mode" />
+              </label>
+              <label class="setting-row">
+                <span><strong>Quiet sounds</strong><small>Soft ticks for completed waits.</small></span>
+                <input id="soundToggle" type="checkbox" aria-label="Quiet sounds" />
+              </label>
+              <label class="setting-row">
+                <span><strong>Hints</strong><small>Show onboarding nudges.</small></span>
+                <input id="hintsToggle" type="checkbox" aria-label="Hints" />
+              </label>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <div class="onboarding hidden" id="onboarding" role="note">
+      <strong>DeadTime beta</strong>
+      <span>Set one resume point, start a timer, and let everything else stay quiet.</span>
+      <button class="icon-button" id="dismissHints" type="button" aria-label="Dismiss hints" title="Dismiss hints"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>

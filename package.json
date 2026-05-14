@@ -1,0 +1,27 @@
+{
+  "name": "deadtime",
+  "version": "0.1.0-beta",
+  "private": false,
+  "description": "A lightweight local productivity companion for keeping momentum during waiting periods.",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/selmir100/DeadTime.git"
+  },
+  "homepage": "https://github.com/selmir100/DeadTime#readme",
+  "bugs": {
+    "url": "https://github.com/selmir100/DeadTime/issues"
+  },
+  "scripts": {
+    "start": "node ./serve.mjs",
+    "check": "node --check ./app.js && node --check ./serve.mjs"
+  },
+  "keywords": [
+    "productivity",
+    "timer",
+    "desktop",
+    "utility",
+    "local-first"
+  ],
+  "license": "UNLICENSED"
+}
