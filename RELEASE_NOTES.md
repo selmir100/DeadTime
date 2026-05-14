@@ -14,7 +14,7 @@ This beta is **not a packaged desktop installer yet**. The GitHub download conta
 4. Run:
 
 ```powershell
-npm start
+node .\serve.mjs
 ```
 
 5. Open:
